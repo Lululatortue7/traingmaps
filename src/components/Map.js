@@ -106,7 +106,7 @@ function Map({ startCity, endCity }) {
               <div>
                 <h3>{endCity}</h3>
                 {/* Afficher l'image si elle existe, taille doublée */}
-                {cityImage && <img src={cityImage} alt={`Image de ${endCity}`} style={{ width: '200px', height: 'auto', borderRadius: '10px' }} />}
+                {cityImage && <img src={cityImage} alt={`View of ${endCity}`} style={{ width: '200px', height: 'auto', borderRadius: '10px' }} />}
               </div>
             </Popup>
           </Marker>
@@ -117,4 +117,3 @@ function Map({ startCity, endCity }) {
 }
 
 export default Map;
-
