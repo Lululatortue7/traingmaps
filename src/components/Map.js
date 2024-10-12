@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import '../styles/Modal.css';
 
 // Clé API Unsplash (remplace par la tienne)
-const UNSPLASH_API_KEY = 'BQ7R5EW5Azm3jvfZOdvZo8xuFskHYB-FpGTgT9mJKu4'; // Ta clé API Unsplash
+const UNSPLASH_API_KEY = 'BQ7R5EW5Azm3jvfZOdvZo8xuFskHYB-FpGTgT9mJKu4';
 
 // Fonction pour récupérer les coordonnées des villes
 const fetchCoordinates = async (city) => {
@@ -22,8 +23,15 @@ const fetchCoordinates = async (city) => {
 const fetchCityImage = async (city) => {
   const response = await fetch(`https://api.unsplash.com/search/photos?query=${city}&client_id=${UNSPLASH_API_KEY}`);
   const data = await response.json();
+
   if (data && data.results && data.results.length > 0) {
-    return data.results[0].urls.regular; // Retourne une image plus grande (taille regular)
+    const landscapeImage = data.results.find(image => image.width > image.height);
+    if (landscapeImage) {
+      return landscapeImage.urls.regular;
+    } else {
+      console.warn(`Pas d'image paysage trouvée pour ${city}`);
+      return null;
+    }
   } else {
     console.error(`Impossible de trouver une image pour ${city}`);
     return null;
@@ -34,15 +42,24 @@ const fetchCityImage = async (city) => {
 const blueCircleIcon = L.divIcon({
   className: 'custom-div-icon',
   html: "<div style='background-color:#007bff; width:10px; height:10px; border-radius: 50%; border: 2px solid white;'></div>",
-  iconSize: [10, 10], // Taille plus petite du point
-  popupAnchor: [0, -15] // Ajuste la position de la popup par rapport à l'icône
+  iconSize: [10, 10],
+  popupAnchor: [0, -15]
 });
 
 function Map({ startCity, endCity }) {
   const [startCoords, setStartCoords] = useState(null);
   const [endCoords, setEndCoords] = useState(null);
-  const [cityImage, setCityImage] = useState(null); // Stocke l'image de la ville
-  const markerRef = useRef(null); // Référence pour le marqueur
+  const [cityImage, setCityImage] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Pour afficher ou non la modal
+  const markerRef = useRef(null);
+
+  const handleModalOpen = async () => {
+    setShowModal(true); // Ouvre la modal
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false); // Ferme la modal
+  };
 
   useEffect(() => {
     if (startCity && endCity) {
@@ -52,9 +69,8 @@ function Map({ startCity, endCity }) {
         setStartCoords(start);
         setEndCoords(end);
 
-        // Récupérer l'image de la ville de destination
         const image = await fetchCityImage(endCity);
-        setCityImage(image); // Mettre à jour l'état avec l'image
+        setCityImage(image);
       };
       fetchCoords();
     }
@@ -64,12 +80,12 @@ function Map({ startCity, endCity }) {
     if (markerRef.current) {
       const marker = markerRef.current;
 
-      // Afficher la popup au survol
+      // Ouvre la bulle au survol
       marker.on('mouseover', function () {
         marker.openPopup();
       });
 
-      // Masquer la popup lorsque la souris quitte
+      // Ferme la bulle lorsque la souris quitte
       marker.on('mouseout', function () {
         marker.closePopup();
       });
@@ -77,42 +93,58 @@ function Map({ startCity, endCity }) {
   }, [endCoords]);
 
   return (
-    <MapContainer
-      center={[48.8566, 2.3522]} // Centre initial sur Paris
-      zoom={5}
-      style={{ height: "400px", width: "100%" }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <div>
+      <MapContainer
+        center={[48.8566, 2.3522]} 
+        zoom={5}
+        style={{ height: "400px", width: "100%" }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
 
-      {/* Si les deux coordonnées existent, trace la ligne */}
-      {startCoords && endCoords && (
-        <>
-          <Polyline
-            positions={[startCoords, endCoords]}
-            color="blue"
-            weight={4} // Épaisseur de la ligne
-          />
+        {startCoords && endCoords && (
+          <>
+            {/* Ligne bleue entre les deux villes */}
+            <Polyline
+              positions={[startCoords, endCoords]}
+              color="blue"
+              weight={4}
+            />
 
-          {/* Ajout du point bleu au niveau de la ville de destination */}
-          <Marker position={endCoords} icon={blueCircleIcon} ref={markerRef}>
-            <Popup
-              autoPan={true} // Active le déplacement de la carte si la popup sort de l'écran
-              autoPanPadding={[50, 50]} // Marge autour de la popup lors du déplacement
-              keepInView={true} // Assure que la popup reste visible
-            >
-              <div>
-                <h3>{endCity}</h3>
-                {/* Afficher l'image si elle existe, taille doublée */}
-                {cityImage && <img src={cityImage} alt={`View of ${endCity}`} style={{ width: '200px', height: 'auto', borderRadius: '10px' }} />}
-              </div>
-            </Popup>
-          </Marker>
-        </>
+            {/* Point d'arrivée avec modal */}
+            <Marker position={endCoords} icon={blueCircleIcon} ref={markerRef} eventHandlers={{ click: handleModalOpen }}>
+              <Popup>
+                <div>
+                  <h3>{endCity}</h3>
+                  {cityImage && <img src={cityImage} alt={`View of ${endCity}`} style={{ width: '200px', height: 'auto', borderRadius: '10px' }} />}
+                </div>
+              </Popup>
+            </Marker>
+          </>
+        )}
+      </MapContainer>
+
+      {/* Modal pour afficher les détails de la ville */}
+      {showModal && (
+        <div className="modal-overlay" onClick={handleModalClose}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={handleModalClose}>X</button>
+            <h2>{endCity}</h2>
+            {cityImage && <img src={cityImage} alt={`Large view of ${endCity}`} style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />}
+            <h3>Pourquoi visiter {endCity} ?</h3>
+            <p>Des informations sur pourquoi visiter {endCity}.</p>
+
+            <h3>Que voir à {endCity} ?</h3>
+            <p>Des endroits à visiter dans {endCity}.</p>
+
+            <h3>Le saviez-vous ?</h3>
+            <p>Un fun fact sur {endCity}.</p>
+          </div>
+        </div>
       )}
-    </MapContainer>
+    </div>
   );
 }
 

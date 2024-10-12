@@ -1,0 +1,4 @@
+INSERT INTO villes (nom, pourquoi_visiter, que_voir, fun_fact) VALUES 
+('London', 'Londres est une ville cosmopolite mêlant histoire royale et innovation moderne.', 'Le Tower Bridge, Big Ben, Buckingham Palace, et le British Museum.', 'Londres possède plus de 170 musées, dont certains sont parmi les plus visités au monde.'),
+('Rome', 'Rome est un musée à ciel ouvert, regorgeant de trésors antiques, d architecture baroque, et de cuisine italienne.', 'Le Colisée, le Vatican, la Fontaine de Trevi, et le Panthéon.', 'Il est dit que tous les chemins mènent à Rome en raison de son importance dans l Empire romain.'),
+('Paris', 'Paris, ville de l amour et de la lumière, est célèbre pour ses monuments emblématiques, sa culture artistique, et sa cuisine raffinée.', 'La Tour Eiffel, le Louvre, Notre-Dame, Montmartre, et les Champs-Élysées.', 'La Tour Eiffel devait être démontée après l Exposition Universelle de 1889.');

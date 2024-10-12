@@ -15,21 +15,20 @@ body {
 }
 
 .container {
-  width: 95vw; /* Prend 95% de la largeur du viewport (écran visible) */
-  max-width: 1400px; /* Limite la largeur pour éviter qu'elle ne devienne trop grande sur les grands écrans */
-  margin: 0 auto; /* Centre le container horizontalement */
+  width: 95vw;
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f8d9d6; /* Fond rose */
-  border-radius: 10px; /* Ajoute des coins arrondis */
+  background-color: #f8d9d6;
+  border-radius: 10px;
 }
-
 
 .header {
   text-align: center;
   margin-bottom: 20px;
-  background-color: #4FA5E3; /* Fond bleu */
+  background-color: #4FA5E3;
   padding: 15px;
-  color: white; /* Texte blanc */
+  color: white;
   border-radius: 10px;
 }
 
@@ -39,21 +38,31 @@ body {
   font-weight: normal;
 }
 
+/* Aligner les champs Départ et Destination avec l'icône du train sur la même ligne */
 .form-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px; /* Espacement entre les éléments */
+  gap: 20px; /* Espace entre chaque élément */
   margin-top: 30px;
   padding: 20px;
   background-color: white;
-  border-radius: 10px; /* Bordures arrondies */
+  border-radius: 10px;
 }
 
+/* Form group en ligne */
 .form-group {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* S'assurer que les groupes sont alignés horizontalement */
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* Espace entre chaque champ de formulaire et l'icône */
 }
 
 label {
@@ -71,7 +80,13 @@ input {
   font-size: 16px;
 }
 
-/* Taille de l'icône du train */
+/* Icône du train entre les deux champs */
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .icon img {
   width: 40px;
   height: 40px;
@@ -94,8 +109,9 @@ input {
   color: white;
 }
 
+/* Leaflet map container */
 .leaflet-container {
-  width: 100%; /* Prend toute la largeur de son parent */
+  width: 100%;
   height: 400px;
   border-radius: 10px;
 }
@@ -120,5 +136,74 @@ input {
 
 .suggestions-list li:hover {
   background-color: #f0f0f0;
+}
+
+/* Styles pour les boutons en haut à gauche */
+.header-buttons-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.header-button {
+  color: #fff;
+  background-color: #4FA5E3;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.header-button:hover {
+  background-color: #3a8dc1;
+}
+
+/* Ajouter un contour bleu foncé pour le bouton actif */
+.active-button {
+  border: 2px solid #003366; /* Contour bleu foncé */
+}
+
+/* Animation de la gare */
+.gare-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.gare-image {
+  width: 100vw;
+  height: 100vh;
+  background: url('./assets/Gare_de_Limoges.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.gare-animation {
+  animation: openGare 1.5s ease forwards;
+}
+
+@keyframes openGare {
+  0% {
+    clip-path: inset(0% 0% 0% 0%);
+  }
+  100% {
+    clip-path: inset(0% 50% 0% 50%);
+  }
+}
+
+label[for="night-trains"] {
+  font-size: 12px; /* Adjust the size as needed */
 }
 

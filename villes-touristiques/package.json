@@ -1,0 +1,16 @@
+{
+  "name": "villes-touristiques",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module", 
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "node-fetch": "^3.0.0",
+    "csv-parser": "^3.0.0",
+    "sqlite3": "^5.0.0"
+  }
+}
+
