@@ -4,7 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import Map from './components/Map';
 import PartirPage from './PartirPage'; // Import de la page "Où partir"
 import trainIcon from './assets/train-icon.png'; // Icône du train
-import gareImage from './assets/Gare_de_Limoges.jpg'; // L'image de la gare
 
 function App() {
   const [currentPage, setCurrentPage] = useState('escale'); // État pour suivre la page active
