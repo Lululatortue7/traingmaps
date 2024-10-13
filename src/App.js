@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import Map from './components/Map';
 import PartirPage from './PartirPage'; // Import de la page "Où partir"
 import trainIcon from './assets/train-icon.png'; // Icône du train
+import { FaTrain, FaEye, FaBrain } from 'react-icons/fa';
+
 
 function App() {
   const [currentPage, setCurrentPage] = useState('escale'); // État pour suivre la page active

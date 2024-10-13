@@ -3,11 +3,13 @@ import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import '../styles/Modal.css';
+import trainIcon from '../assets/train.png';
+import eyeIcon from '../assets/eye.png';
+import brainIcon from '../assets/brain.png';
+import { citiesData } from '../citiesData'; // Importation des données des villes
 
-// Clé API Unsplash (remplace par la tienne)
 const UNSPLASH_API_KEY = 'BQ7R5EW5Azm3jvfZOdvZo8xuFskHYB-FpGTgT9mJKu4';
 
-// Fonction pour récupérer les coordonnées des villes
 const fetchCoordinates = async (city) => {
   const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${city}`);
   const data = await response.json();
@@ -19,7 +21,6 @@ const fetchCoordinates = async (city) => {
   }
 };
 
-// Fonction pour récupérer une image de la ville via l'API Unsplash
 const fetchCityImage = async (city) => {
   const response = await fetch(`https://api.unsplash.com/search/photos?query=${city}&client_id=${UNSPLASH_API_KEY}`);
   const data = await response.json();
@@ -38,7 +39,6 @@ const fetchCityImage = async (city) => {
   }
 };
 
-// Icône pour un petit cercle bleu (stylisé)
 const blueCircleIcon = L.divIcon({
   className: 'custom-div-icon',
   html: "<div style='background-color:#007bff; width:10px; height:10px; border-radius: 50%; border: 2px solid white;'></div>",
@@ -50,15 +50,16 @@ function Map({ startCity, endCity }) {
   const [startCoords, setStartCoords] = useState(null);
   const [endCoords, setEndCoords] = useState(null);
   const [cityImage, setCityImage] = useState(null);
-  const [showModal, setShowModal] = useState(false); // Pour afficher ou non la modal
+  const [showModal, setShowModal] = useState(false); 
   const markerRef = useRef(null);
+  const [cityInfo, setCityInfo] = useState(null); // Stockage des infos de la ville
 
-  const handleModalOpen = async () => {
-    setShowModal(true); // Ouvre la modal
+  const handleModalOpen = () => {
+    setShowModal(true);
   };
 
   const handleModalClose = () => {
-    setShowModal(false); // Ferme la modal
+    setShowModal(false);
   };
 
   useEffect(() => {
@@ -71,6 +72,14 @@ function Map({ startCity, endCity }) {
 
         const image = await fetchCityImage(endCity);
         setCityImage(image);
+
+        // Recherche des infos dans le fichier citiesData.js
+        const foundCity = citiesData.find(city => city.name.toLowerCase() === endCity.toLowerCase());
+        if (foundCity) {
+          setCityInfo(foundCity);
+        } else {
+          setCityInfo(null); // Si la ville n'est pas trouvée, réinitialiser cityInfo
+        }
       };
       fetchCoords();
     }
@@ -79,25 +88,17 @@ function Map({ startCity, endCity }) {
   useEffect(() => {
     if (markerRef.current) {
       const marker = markerRef.current;
-
-      // Ouvre la bulle au survol
-      marker.on('mouseover', function () {
-        marker.openPopup();
-      });
-
-      // Ferme la bulle lorsque la souris quitte
-      marker.on('mouseout', function () {
-        marker.closePopup();
-      });
+      marker.on('mouseover', () => marker.openPopup());
+      marker.on('mouseout', () => marker.closePopup());
     }
   }, [endCoords]);
 
   return (
     <div>
       <MapContainer
-        center={[48.8566, 2.3522]} 
+        center={[49.1193, 6.1757]}
         zoom={5}
-        style={{ height: "400px", width: "100%" }}
+        style={{ height: "calc(100vh - 200px)", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -106,14 +107,8 @@ function Map({ startCity, endCity }) {
 
         {startCoords && endCoords && (
           <>
-            {/* Ligne bleue entre les deux villes */}
-            <Polyline
-              positions={[startCoords, endCoords]}
-              color="blue"
-              weight={4}
-            />
+            <Polyline positions={[startCoords, endCoords]} color="blue" weight={4} />
 
-            {/* Point d'arrivée avec modal */}
             <Marker position={endCoords} icon={blueCircleIcon} ref={markerRef} eventHandlers={{ click: handleModalOpen }}>
               <Popup>
                 <div>
@@ -133,14 +128,22 @@ function Map({ startCity, endCity }) {
             <button className="modal-close" onClick={handleModalClose}>X</button>
             <h2>{endCity}</h2>
             {cityImage && <img src={cityImage} alt={`Large view of ${endCity}`} style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />}
-            <h3>Pourquoi visiter {endCity} ?</h3>
-            <p>Des informations sur pourquoi visiter {endCity}.</p>
 
-            <h3>Que voir à {endCity} ?</h3>
-            <p>Des endroits à visiter dans {endCity}.</p>
+            {/* Si cityInfo existe, afficher les détails, sinon, n'afficher que le nom et l'image */}
+            {cityInfo ? (
+              <>
+                <h3><img src={trainIcon} alt="train icon" style={{ width: '30px', marginRight: '10px' }} /> Pourquoi visiter {endCity} ?</h3>
+                <p>{cityInfo.pourquoi_visiter}</p>
 
-            <h3>Le saviez-vous ?</h3>
-            <p>Un fun fact sur {endCity}.</p>
+                <h3><img src={eyeIcon} alt="eye icon" style={{ width: '30px', marginRight: '10px' }} /> Que voir à {endCity} ?</h3>
+                <p>{cityInfo.que_voir}</p>
+
+                <h3><img src={brainIcon} alt="brain icon" style={{ width: '30px', marginRight: '10px' }} /> Le saviez-vous ?</h3>
+                <p>{cityInfo.fun_fact}</p>
+              </>
+            ) : (
+              <p></p> /* Ce message est facultatif */
+            )}
           </div>
         </div>
       )}

@@ -1,3 +1,5 @@
+App.css
+
 /* Global Styles */
 * {
   margin: 0;
@@ -6,6 +8,8 @@
 }
 
 body {
+  margin: 0; /* Ou ajuster la valeur */
+  padding: 0px; /* Ajuster ici */
   font-family: 'Arial', sans-serif;
   background-color: white;
   display: flex;
@@ -16,18 +20,23 @@ body {
 
 .container {
   width: 95vw;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 1600px;
+  margin: 1.5cm auto 0 auto; /* Marge de 2 cm en haut */
+  padding: 10px;
   background-color: #f8d9d6;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2cm); /* Prend tout l'espace de l'écran sans la marge du haut */
+  box-sizing: border-box;
 }
+
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   background-color: #4FA5E3;
-  padding: 15px;
+  padding: 10px;
   color: white;
   border-radius: 10px;
 }
@@ -36,6 +45,8 @@ body {
   color: white;
   font-size: 24px;
   font-weight: normal;
+  margin: 0; /* Ou ajuster la valeur */
+  padding: 0px; /* Ajuster ici */
 }
 
 /* Aligner les champs Départ et Destination avec l'icône du train sur la même ligne */
@@ -43,11 +54,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px; /* Espace entre chaque élément */
-  margin-top: 30px;
-  padding: 20px;
+  gap: 20px;
+  margin-top: 0px; /* Réduisez l'espace entre les éléments */
+  margin-bottom: 20px; /* Réduit l'espace en dessous du formulaire */
   background-color: white;
+  padding: 10px;
   border-radius: 10px;
+  /* Empêche le formulaire de grandir inutilement */
+  flex-shrink: 0;
 }
 
 /* Form group en ligne */
@@ -63,6 +77,7 @@ form {
   justify-content: center;
   align-items: center;
   gap: 20px; /* Espace entre chaque champ de formulaire et l'icône */
+  flex-wrap: wrap; /* Permet de mettre les éléments sur plusieurs lignes si nécessaire */
 }
 
 label {
@@ -112,9 +127,12 @@ input {
 /* Leaflet map container */
 .leaflet-container {
   width: 100%;
-  height: 400px;
+  flex-grow: 1; /* Permet à la carte d'occuper tout l'espace restant */
+  height: auto;
+  min-height: 400px; /* Hauteur minimum de la carte */
   border-radius: 10px;
 }
+
 
 .suggestions-list {
   list-style-type: none;
@@ -205,5 +223,108 @@ input {
 
 label[for="night-trains"] {
   font-size: 12px; /* Adjust the size as needed */
+}
+
+/* Style pour le champ de date */
+.date-picker {
+  width: 150px; /* Ajuste la largeur du champ de date */
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #4FA5E3;
+  background-color: #E0F2FF;
+  color: #333;
+  font-size: 16px;
+}
+
+.filter-button {
+  background-color: #4FA5E3; /* Couleur de fond */
+  border: none;
+  padding: 10px 15px;
+  margin-left: 10px; /* Espace avec le bouton "C'est parti !" */
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #3a8dc1; /* Couleur au survol */
+}
+
+/* Styles pour le pop-up de filtres */
+.filter-popup {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  z-index: 1001; /* S'assurer que le popup est au-dessus de la carte */
+  position: relative; /* Pour que le z-index soit pris en compte */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optionnel : un effet d'ombre pour plus de visibilité */
+}
+
+.filter-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* S'assurer que l'overlay soit bien au-dessus de la carte */
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligner les items à gauche */
+  margin-bottom: 10px;
+}
+
+.filter-checkbox {
+  margin-right: 10px; /* Ajuste l'écart entre la case et le texte */
+}
+
+
+
+input[type="range"] {
+  width: 100%;
+}
+
+
+
+
+.filter-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.filter-popup-content h2 {
+  margin-bottom: 15px;
+}
+
+.filter-popup-content label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filter-popup-content button {
+  padding: 10px 15px;
+  background-color: #4FA5E3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-popup-content button:hover {
+  background-color: #3a8dc1;
 }
 
