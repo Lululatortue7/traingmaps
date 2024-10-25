@@ -94,7 +94,7 @@ export const citiesData = [
         name: 'Copenhague',
         pourquoi_visiter: 'Copenhague, capitale du Danemark, est une ville verte et design, où la durabilité et la qualité de vie sont au cœur du quotidien. Elle est connue pour ses châteaux royaux, ses musées, et son architecture scandinave.',
         que_voir: 'Le Palais d’Amalienborg, la Petite Sirène, les Jardins de Tivoli, et le port de Nyhavn sont des incontournables.',
-        fun_fact: 'La Petite Sirène de Copenhague est l’une.'
+        fun_fact: 'La Petite Sirène de Copenhague est l’une des statues les plus photographiées au monde, malgré sa petite taille de 1.25 mètre. Créée en 1913, elle est inspirée du célèbre conte de Hans Christian Andersen.'
 
     },
     {

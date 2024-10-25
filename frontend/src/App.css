@@ -328,3 +328,72 @@ input[type="range"] {
   background-color: #3a8dc1;
 }
 
+.map-and-sidebar {
+  display: flex;
+}
+
+.sidebar {
+  width: 25%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: calc(100vh - 200px);
+}
+
+.city-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar p {
+  margin-bottom: 20px;
+}
+
+.left-image-section {
+  position: absolute;
+  top: 20px; /* Ajustez la distance par rapport au haut si nécessaire */
+  left: 10px; /* Placez-le à gauche */
+  width: 6cm; /* La largeur de votre bande blanche */
+  padding: 10px;
+}
+
+.city-image {
+  width: 100%; /* L'image prend toute la largeur de la bande */
+  height: auto; /* Maintient le ratio d'aspect de l'image */
+  border-radius: 8px; /* Un effet arrondi si vous le souhaitez */
+}
+
+
+.main-section {
+  display: flex;
+}
+
+.left-info-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.city-info h3 {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.right-map-section {
+  flex: 2;
+}
+
+.destinations-section {
+  margin-top: 20px;
+}
+
+.tourist-city-section {
+  text-align: center;
+  margin-top: 20px;
+}
