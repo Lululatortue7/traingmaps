@@ -1,0 +1,111 @@
+Ville de départ,Destination,Temps et Prix
+Londres,Paris,Direct · 2 h 17
+Londres,Dublin,1 correspondance · 7 h 03
+Londres,Bruxelles,Direct · 1 h 56
+Londres,Amsterdam,Direct · 3 h 57
+Londres,Zurich,3 correspondances · 7 h 11
+Bruxelles,Londres,Direct · 1 h 56
+Bruxelles,Berlin,1 correspondance · 6 h 02 · À partir de 74 €
+Bruxelles,Paris,Direct · 1 h 22 · À partir de 69 €
+Bruxelles,Amsterdam,Direct · 1 h 51 · À partir de 25 €
+Bruxelles,Zurich,3 correspondances · 6 h 16 · À partir de 85 €
+Amsterdam,Londres,Direct · 4 h 00
+Amsterdam,Berlin,1 correspondance · 6 h 12 · À partir de 42 €
+Amsterdam,Paris,Direct · 3 h 20 · À partir de 108 €
+Amsterdam,Bruxelles,Direct · 1 h 52 · À partir de 25 €
+Amsterdam,Zurich,2 correspondances · 7 h 42 · À partir de 77 €
+Luxembourg,Londres,1 correspondance · 4 h 50
+Luxembourg,Berlin,1 correspondance · 7 h 44
+Luxembourg,Paris,Direct · 2 h 13
+Luxembourg,Bruxelles,Direct · 2 h 56
+Luxembourg,Amsterdam,1 correspondance · 5 h 30
+Genève,Londres,2 correspondances · 6 h 30
+Genève,Rome,1 correspondance · 7 h 30 · À partir de 121 €
+Genève,Paris,Direct · 3 h 18 · À partir de 69 €
+Genève,Bruxelles,2 correspondances · 5 h 35 · À partir de 94 €
+Genève,Amsterdam,2 correspondances · 7 h 32 · À partir de 140 €
+Zurich,Londres,2 correspondances · 7 h 18
+Zurich,Berlin,1 correspondance · 7 h 47 · À partir de 75 €
+Zurich,Rome,1 correspondance · 6 h 38 · À partir de 91 €
+Zurich,Paris,Direct · 4 h 06 · À partir de 103 €
+Zurich,Vienne,Direct · 7 h 54 · À partir de 63 €
+Barcelone,Madrid,Direct · 2 h 32 · À partir de 28 €
+Barcelone,Paris,1 correspondance · 6 h 43 · À partir de 139 €
+Barcelone,Marseille,Direct · 4 h 53 · À partir de 97 €
+Barcelone,Genève,1 correspondance · 7 h 27 · À partir de 169 €
+Barcelone,Valence,Direct · 2 h 50 · À partir de 25 €
+Madrid,Barcelone,Direct · 2 h 36 · À partir de 28 €
+Madrid,Marseille,1 correspondance · 7 h 46 · À partir de 142 €
+Madrid,Porto,2 correspondances · 6 h 50 · À partir de 66 €
+Madrid,Valence,Direct · 1 h 56 · À partir de 15 €
+Madrid,Séville,Direct · 2 h 55 · À partir de 30 €
+Milan,Rome,Direct · 3 h 07 · À partir de 22 €
+Milan,Paris,1 correspondance · 6 h 26 · À partir de 133 €
+Milan,Zurich,Direct · 3 h 25 · À partir de 50 €
+Milan,Ljubljana,1 correspondance · 7 h 03 · À partir de 66 €
+Milan,Luxembourg,2 correspondances · 7 h 53
+Rome,Zurich,1 correspondance · 6 h 41 · À partir de 96 €
+Rome,Monaco,2 correspondances · 7 h 02 · À partir de 58 €
+Rome,Milan,Direct · 3 h 04 · À partir de 22 €
+Rome,Genève,2 correspondances · 7 h 43 · À partir de 112 €
+Rome,Naples,Direct · 1 h 07 · À partir de 11 €
+Florence,Rome,Direct · 1 h 19 · À partir de 15 €
+Florence,Zurich,1 correspondance · 5 h 40 · À partir de 83 €
+Florence,Ljubljana,2 correspondances · 7 h 03 · À partir de 54 €
+Florence,Monaco,2 correspondances · 5 h 44 · À partir de 52 €
+Florence,Schaan,2 correspondances · 7 h 08
+Lisbonne,Porto,Direct · 2 h 46
+Lisbonne,Amadora,Direct · 16 min
+Lisbonne,Braga,Direct · 3 h 37
+Lisbonne,Setúbal,1 correspondance · 1 h 12
+Lisbonne,Coimbra,Direct · 1 h 42
+Porto,Madrid,3 correspondances · 7 h 11 · À partir de 70 €
+Porto,Lisbonne,Direct · 2 h 54
+Porto,Amadora,1 correspondance · 3 h 20
+Porto,Braga,Direct · 44 min
+Porto,Setúbal,1 correspondance · 4 h 00
+Berlin,Paris,1 correspondance · 7 h 42 · À partir de 84 €
+Berlin,Varsovie,Direct · 5 h 44 · À partir de 33 €
+Berlin,Vienne,1 correspondance · 7 h 28 · À partir de 56 €
+Berlin,Prague,Direct · 4 h 07 · À partir de 27 €
+Berlin,Copenhague,1 correspondance · 7 h 07 · À partir de 72 €
+Vienne,Berlin,1 correspondance · 7 h 24 · À partir de 55 €
+Vienne,Budapest,Direct · 2 h 39 · À partir de 13 €
+Vienne,Varsovie,Direct · 7 h 18 · À partir de 28 €
+Vienne,Prague,Direct · 4 h 01 · À partir de 14 €
+Vienne,Zagreb,Direct · 6 h 11 · À partir de 56 €
+Munich,Berlin,Direct · 3 h 54 · À partir de 36 €
+Munich,Paris,1 correspondance · 5 h 29 · À partir de 73 €
+Munich,Budapest,Direct · 6 h 49 · À partir de 41 €
+Munich,Vienne,Direct · 4 h 00 · À partir de 28 €
+Munich,Prague,Direct · 5 h 25 · À partir de 30 €
+Francfort,Londres,1 correspondance · 5 h 23
+Francfort,Berlin,Direct · 3 h 49
+Francfort,Paris,Direct · 3 h 43
+Francfort,Vienne,Direct · 6 h 43
+Francfort,Prague,1 correspondance · 6 h 48
+Prague,Berlin,Direct · 4 h 27 · À partir de 35 €
+Prague,Budapest,Direct · 6 h 43 · À partir de 39 €
+Prague,Varsovie,1 correspondance · 7 h 37 · À partir de 109 €
+Prague,Vienne,Direct · 4 h 03 · À partir de 15 €
+Prague,Bratislava,Direct · 4 h 06 · À partir de 48 €
+Bordeaux,Londres,2 correspondances · 5 h 26
+Bordeaux,Paris,Direct · 2 h 06 · À partir de 40 €
+Bordeaux,Bruxelles,2 correspondances · 4 h 33 · À partir de 161 €
+Bordeaux,Amsterdam,2 correspondances · 6 h 28 · À partir de 175 €
+Bordeaux,Zurich,2 correspondances · 6 h 55 · À partir de 128 €
+Toulouse,Londres,2 correspondances · 7 h 33
+Toulouse,Madrid,2 correspondances · 6 h 23 · À partir de 108 €
+Toulouse,Paris,Direct · 4 h 13 · À partir de 48 €
+Toulouse,Bruxelles,2 correspondances · 6 h 38 · À partir de 160 €
+Toulouse,Luxembourg,2 correspondances · 7 h 28
+Marseille,Londres,2 correspondances · 6 h 39
+Marseille,Madrid,2 correspondances · 8 h 00 · À partir de 128 €
+Marseille,Paris,1 correspondance · 3 h 55 · À partir de 54 €
+Marseille,Bruxelles,Direct · 5 h 21 · À partir de 116 €
+Marseille,Amsterdam,1 correspondance · 7 h 31 · À partir de 176 €
+Lyon,Londres,1 correspondance · 4 h 29
+Lyon,Madrid,1 correspondance · 7 h 46 · À partir de 123 €
+Lyon,Rome,1 correspondance · 7 h 56 · À partir de 183 €
+Lyon,Paris,Direct · 1 h 49 · À partir de 23 €
+Lyon,Bruxelles,1 correspondance · 3 h 31 · À partir de 97 €

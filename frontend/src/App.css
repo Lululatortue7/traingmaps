@@ -8,27 +8,15 @@ App.css
 }
 
 body {
-  margin: 0; /* Ou ajuster la valeur */
-  padding: 0px; /* Ajuster ici */
-  font-family: 'Arial', sans-serif;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  margin: 0; /* Supprime les marges par défaut du body */
+  padding: 0; /* Supprime le padding par défaut du body */
 }
 
 .container {
-  width: 95vw;
-  max-width: 1600px;
-  margin: 1.5cm auto 0 auto; /* Marge de 2 cm en haut */
-  padding: 10px;
-  background-color: #f8d9d6;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 2cm); /* Prend tout l'espace de l'écran sans la marge du haut */
-  box-sizing: border-box;
+  width: 100%;
+  margin: 0; /* Supprime les marges par défaut */
+  padding: 0; /* Supprime le padding par défaut */
+  background-color: #f8d7da; /* Couleur de fond rose */
 }
 
 
@@ -376,8 +364,8 @@ input[type="range"] {
 }
 
 .left-info-section {
-  flex: 1;
-  padding: 20px;
+  width: 27%; /* Réduisez cette valeur pour diminuer la largeur de la section */
+  padding: 10px;
 }
 
 .city-info h3 {
@@ -396,4 +384,125 @@ input[type="range"] {
 .tourist-city-section {
   text-align: center;
   margin-top: 20px;
+}
+
+.reservation-info-card {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-info-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.reservation-info-card p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.reservation-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+.reservation-button:hover {
+  background-color: #0056b3;
+}
+
+.city-info {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.city-info h3 {
+  font-size: 1rem;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.city-info img {
+  width: 24px;
+  height: 24px;
+}
+.train-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.train-route .city-name {
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+.train-track {
+  position: relative;
+  flex-grow: 1;
+  height: 4px;
+  background-color: #ddd;
+  border-radius: 2px;
+  overflow: visible; /* Permet à l'icône de déborder sans être coupée */
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.train-icon {
+  position: absolute;
+  bottom: 5px; /* Positionne l'icône juste au-dessus de la ligne */
+  width: 30px;  /* Ajuster la taille de l'icône */
+  height: 30px;
+  animation: trainMove 4s linear infinite;
+}
+
+@keyframes trainMove {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: calc(100% - 30px); /* Animation de gauche à droite */
+  }
+}
+
+.suggestions-list {
+  position: absolute; /* Position it directly below the input field */
+  top: 100%; /* Start right after the input field */
+  left: 0;
+  width: 100%; /* Match the width of the input field */
+  max-height: 200px; /* Optional: limit height for scrollable suggestions */
+  overflow-y: auto; /* Scroll if there are many suggestions */
+  background-color: #fff; /* White background for contrast */
+  border: 1px solid #ddd; /* Light border to define dropdown edges */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+  z-index: 1000; /* Make sure it appears above other elements */
+}
+
+.suggestions-list li {
+  padding: 10px;
+  color: #333; /* Dark color for visibility */
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
 }

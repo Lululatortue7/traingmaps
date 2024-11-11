@@ -1,234 +1,260 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { citiesData } from '../citiesData';
 import cityImages from '../data/cityImages.json';
-import '../styles/Modal2.css';
 import DestinationMarker from './marker';
+import '../styles/Modal2.css';
 
 const UNSPLASH_API_KEY = 'BQ7R5EW5Azm3jvfZOdvZo8xuFskHYB-FpGTgT9mJKu4';
 
-// Icône pour le marqueur gris (ville de départ)
+// Icons for markers
 const grayCircleIcon = L.divIcon({
   className: 'custom-div-icon',
   html: "<div style='background-color:#808080; width:10px; height:10px; border-radius: 50%; border: 2px solid white;'></div>",
   iconSize: [10, 10],
-  popupAnchor: [0, -15]
+  popupAnchor: [0, -15],
 });
 
-// Icône pour les marqueurs bleus
 const blueCircleIcon = L.divIcon({
   className: 'custom-div-icon',
   html: "<div style='background-color:#007bff; width:10px; height:10px; border-radius: 50%; border: 2px solid white;'></div>",
   iconSize: [10, 10],
-  popupAnchor: [0, -15]
+  popupAnchor: [0, -15],
 });
 
-// Icône pour les marqueurs verts (ville la plus touristique)
 const greenCircleIcon = L.divIcon({
   className: 'custom-div-icon',
   html: "<div style='background-color:#28a745; width:10px; height:10px; border-radius: 50%; border: 2px solid white;'></div>",
   iconSize: [10, 10],
-  popupAnchor: [0, -15]
+  popupAnchor: [0, -15],
 });
 
-// Fonction pour récupérer l'image de la ville
+// Function to fetch city image
 const fetchCityImage = async (city) => {
   if (cityImages && cityImages[city]) {
-    return cityImages[city];  // Si l'image est trouvée dans le fichier JSON
+    return cityImages[city];
   }
-
   try {
     const response = await fetch(`https://api.unsplash.com/search/photos?query=${city}&client_id=${UNSPLASH_API_KEY}`);
     const data = await response.json();
-
     if (data && data.results && data.results.length > 0) {
       const landscapeImage = data.results.find(image => image.width > image.height);
       return landscapeImage ? landscapeImage.urls.regular : null;
     } else {
-      console.error(`Impossible de trouver une image pour ${city}`);
+      console.error(`Unable to find an image for ${city}`);
       return null;
     }
   } catch (error) {
-    console.error(`Erreur lors de la récupération de l'image pour ${city}:`, error);
+    console.error(`Error fetching image for ${city}:`, error);
     return null;
   }
 };
 
-function Map2({ startCity, journeys, setCityInfo, setSelectedCityImage, cityWeights }) {
-  const [startCoords, setStartCoords] = useState(null); // Coordonnées de la ville de départ
-  const [destinationMarkers, setDestinationMarkers] = useState([]); // Coordonnées des villes d'arrivée
-  const [coordinatesCache, setCoordinatesCache] = useState({}); // Cache des coordonnées
-  const [cityImage, setCityImage] = useState(null); // Ajouté cityImage pour gérer l'état de l'image sélectionnée
+function Map2({ startCity, setCityInfo, setSelectedCityImage, setSelectedDestinationInfo, cityWeights }) {
+  const [startCoords, setStartCoords] = useState(null);
+  const [destinationMarkers, setDestinationMarkers] = useState([]);
+  const [escaleMarkers, setEscaleMarkers] = useState([]);
+  const [zoomLevel, setZoomLevel] = useState(6);
+  const [coordinatesCache, setCoordinatesCache] = useState({});
 
-  // Charger le cache des coordonnées dynamiquement depuis le dossier public une seule fois
+  const MapZoomHandler = () => {
+    useMapEvents({
+      zoomend: (event) => {
+        setZoomLevel(event.target.getZoom());
+      },
+    });
+    return null;
+  };
+
   useEffect(() => {
     const loadCoordinatesCache = async () => {
       try {
         const response = await fetch('/coordinatesCache.json');
-        if (!response.ok) {
-          throw new Error(`Erreur lors du chargement de coordinatesCache.json: ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error(`Error loading coordinatesCache.json: ${response.statusText}`);
         const data = await response.json();
-        setCoordinatesCache(data); // Stocker le cache des coordonnées
+        setCoordinatesCache(data);
       } catch (error) {
-        console.error('Erreur lors du chargement du fichier JSON:', error);
-        setCoordinatesCache({}); // Défaut à un objet vide
+        console.error('Error loading JSON file:', error);
+        setCoordinatesCache({});
       }
     };
     loadCoordinatesCache();
   }, []);
 
-  // Fonction pour obtenir les coordonnées d'une ville, d'abord via le cache, puis via Nominatim si nécessaire
   const fetchCoordinates = async (city) => {
     if (coordinatesCache[city]) {
       return coordinatesCache[city];
     }
-
     try {
       const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${city}`);
-      if (!response.ok) {
-        throw new Error(`Erreur de récupération des coordonnées pour ${city}`);
-      }
       const data = await response.json();
       if (data && data.length > 0) {
         const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-        setCoordinatesCache(prevCache => ({
-          ...prevCache,
-          [city]: coords
-        }));
+        setCoordinatesCache((prevCache) => ({ ...prevCache, [city]: coords }));
         return coords;
       }
-      return null;
     } catch (error) {
-      console.error(`Failed to fetch coordinates for ${city}:`, error);
-      return null;
+      console.error(`Error fetching coordinates for ${city}:`, error);
     }
+    return null;
   };
 
-  // Récupérer les coordonnées de la ville de départ
   useEffect(() => {
     if (startCity) {
       const fetchStartCoords = async () => {
         const coords = await fetchCoordinates(startCity);
-        setStartCoords(coords); // Définit la ville de départ avec ses coordonnées
+        setStartCoords(coords || [48.8566, 2.3522]);
       };
       fetchStartCoords();
     }
   }, [startCity]);
 
-  // Récupérer les coordonnées des villes de destination
+  // Fetch direct destination markers (blue)
   useEffect(() => {
-    console.log("weights: ", cityWeights);
-    const fetchDestinations = async () => {
-      if (journeys && journeys.length > 0) {
-        const markerPromises = journeys.map(async (journey) => {
-          const destinationCity = journey.match(/\((.*?)\)/)?.[1]; // Extraire le nom de la ville entre parenthèses
+    const fetchDestinationsFromAPI = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/destinations?origin=${encodeURIComponent(startCity)}`);
+        if (!response.ok) throw new Error(`Error fetching destinations: ${response.statusText}`);
+        const destinations = await response.json();
 
-          if (destinationCity) {
-            const coords = await fetchCoordinates(destinationCity); // Obtenir les coordonnées de la ville
-            const markerImage = await fetchCityImage(destinationCity);
-            
-            if (coords) {
-              return {
-                city: destinationCity,
-                image: markerImage,
-                permanent: shouldDisplayTooltipPermanent(destinationCity),
-                coords,
-              };
-            }
-          }
-          return null;
-        });
-
-        const markers = await Promise.all(markerPromises);
-        const validMarkers = markers.filter(marker => marker !== null);
-        setDestinationMarkers(validMarkers);
-        console.log('markers', validMarkers);
+        const markers = await Promise.all(
+          destinations.map(async (destination) => {
+            const image = await fetchCityImage(destination.destination_name);
+            return {
+              city: destination.destination_name,
+              coords: [parseFloat(destination.destination_latitude), parseFloat(destination.destination_longitude)],
+              image,
+              info: {
+                price: destination.train_min_price,
+                duration: destination.train_min_duration,
+                link: destination.link_URL,
+              },
+              isDirect: true // Blue markers are direct routes
+            };
+          })
+        );
+        setDestinationMarkers(markers);
+      } catch (error) {
+        console.error('Error fetching destinations:', error);
       }
     };
-    fetchDestinations();
-  }, [journeys, cityWeights]);
+    if (startCity) fetchDestinationsFromAPI();
+  }, [startCity]);
 
-  // Fonction pour ouvrir le modal avec les infos de la ville sélectionnée
-  const handleMarkerClick = async (city) => {
-    console.log("test")
-    setSelectedCityImage(null); // Réinitialiser l'image de la ville
+  // Fetch stopover destination markers (green) from `/api/accessible-cities`
+  useEffect(() => {
+    const fetchEscaleDestinationsFromAPI = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/accessible-cities?origin=${encodeURIComponent(startCity)}`);
+        if (!response.ok) throw new Error(`Error fetching cities with stopover: ${response.statusText}`);
+        const escaleDestinations = await response.json();
 
-    // Récupérer les informations de la ville dans citiesData.js
+        const markers = escaleDestinations.map((destination) => ({
+          city: destination.city,
+          coords: [parseFloat(destination.destination_latitude), parseFloat(destination.destination_longitude)],
+          escale: destination.escale,
+          tourist_weight: destination.tourist_weight,
+          isDirect: false // Green markers are routes with a stopover
+        }));
+        setEscaleMarkers(markers);
+      } catch (error) {
+        console.error('Error fetching cities with stopover:', error);
+      }
+    };
+    if (startCity) fetchEscaleDestinationsFromAPI();
+  }, [startCity]);
+
+  const handleMarkerClick = async (marker) => {
+    const { city, info, isDirect } = marker;
     const foundCity = citiesData.find(c => c.name.toLowerCase() === city.toLowerCase());
-    setCityInfo(foundCity ? foundCity : {
+    const cityInfoData = foundCity || {
       name: city,
       pourquoi_visiter: 'Aucune information disponible pour cette ville.',
       que_voir: 'Aucune information disponible pour cette ville.',
-      fun_fact: 'Aucune information disponible pour cette ville.'
-    });
+      fun_fact: 'Aucune information disponible pour cette ville.',
+    };
+    setCityInfo(cityInfoData);
 
-    // Récupérer l'image de la ville
     const image = await fetchCityImage(city);
-    setCityImage(image); // Met à jour cityImage
-    setSelectedCityImage(image); // Met à jour l'image sélectionnée si nécessaire
+    setSelectedCityImage(image);
+
+    if (isDirect) {
+      // For blue markers (direct routes)
+      setSelectedDestinationInfo({
+        destination_name: city,
+        train_min_price: info ? info.price : 'N/A',
+        train_min_duration: info ? info.duration : 'N/A',
+        link_URL: info ? info.link : '#',
+        isDirect: true
+      });
+    } else {
+      // For green markers (routes with stopover)
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/routes-with-escale?origin=${encodeURIComponent(startCity)}&destination=${encodeURIComponent(city)}`);
+        const routeData = await response.json();
+
+        const selectedEscaleCity = routeData.sort((a, b) => b.total_points - a.total_points)[0];
+        setSelectedDestinationInfo({
+          destination_name: city,
+          escale_info: {
+            price_A: selectedEscaleCity.price_min_trajet_A,
+            duration_A: selectedEscaleCity.train_min_duration_trajet_A,
+            link_A: selectedEscaleCity.link_URL,
+            escale: selectedEscaleCity.escale,
+            price_B: selectedEscaleCity.price_min_trajet_B,
+            duration_B: selectedEscaleCity.train_min_duration_trajet_B,
+            link_B: selectedEscaleCity.link_URL,
+          },
+          isDirect: false
+        });
+      } catch (error) {
+        console.error('Error fetching stopover route information:', error);
+      }
+    }
   };
 
-  const shouldDisplayTooltipPermanent = (city) => {
-    if (!cityWeights) {
-      return false;
-    }
-
-    console.log("test")
-
-    return true;
-  }
-
   return (
-    <>
-      <MapContainer
-        center={startCoords || [48.8566, 2.3522]} // Coordonnées centrées sur la ville de départ, sinon Paris
-        zoom={6}
-        style={{ height: "calc(100vh - 200px)", width: "100%" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    <MapContainer center={startCoords || [48.8566, 2.3522]} zoom={zoomLevel} style={{ height: "calc(100vh - 200px)", width: "100%" }}>
+      <TileLayer attribution='&copy; OpenStreetMap contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <MapZoomHandler />
+
+      {startCoords && (
+        <Marker position={startCoords} icon={grayCircleIcon}>
+          <Popup>{startCity}</Popup>
+        </Marker>
+      )}
+
+      {destinationMarkers.map((marker, index) => (
+        <DestinationMarker
+          key={index}
+          coords={marker.coords}
+          city={marker.city}
+          image={marker.image}
+          icon={blueCircleIcon}
+          onClick={() => handleMarkerClick(marker)}
         />
+      ))}
 
-        {/* Marqueur gris pour la ville de départ */}
-        {startCoords && (
-          <Marker position={startCoords} icon={grayCircleIcon}>
-            <Popup>{startCity}</Popup>
-          </Marker>
-        )}
-
-        {/* Marqueurs bleus pour les villes de destination */}
-        {cityWeights && destinationMarkers.map((marker, index) => (
-          <DestinationMarker 
-            key={index}
-            coords={marker.coords}
-            image={marker.image}
-            city={marker.city}
-            permanent={marker.permanent}
-            onClick={() => handleMarkerClick(marker.city)}
-            icon={blueCircleIcon}
-          />
-        ))}
-      </MapContainer>
-    </>
+      {escaleMarkers.map((marker, index) => (
+        <Marker
+          key={`escale-${index}`}
+          position={marker.coords}
+          icon={greenCircleIcon}
+          eventHandlers={{
+            click: () => handleMarkerClick(marker),
+          }}
+        >
+          <Popup>
+            <strong>{marker.city}</strong><br />
+            Escale à : {marker.escale}<br />
+            Poids touristique : {marker.tourist_weight}
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
   );
 }
 
-export const fetchCoordinates = async (city) => {
-  try {
-    const response = await fetch(`http://127.0.0.1:5000/api/nominatim?city=${city}`);
-    if (!response.ok) {
-      throw new Error(`Erreur de récupération des coordonnées pour ${city}`);
-    }
-    const data = await response.json();
-    return data.length > 0 ? [data[0].lat, data[0].lon] : null;
-  } catch (error) {
-    console.error(`Erreur lors de la récupération des coordonnées pour ${city}:`, error);
-    return null;
-  }
-};
-
-export default Map2; // Ensure Map2 is the default export
+export default Map2;

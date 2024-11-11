@@ -1,0 +1,56 @@
+/* Styles pour le composant Intro */
+.intro-message {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f9f2f5;
+    padding: 20px;
+    border-radius: 8px;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  
+  .intro-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .intro-text {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .intro-highlight {
+    font-size: 1.1em;
+    color: #00796b;
+    margin: 15px 0;
+    font-weight: bold;
+  }
+
+  
+  .blue-dot,
+  .green-dot {
+    font-weight: bold;
+    font-size: 1em;
+    padding: 2px 5px;
+    border-radius: 50%;
+    color: #fff;
+  }
+  
+  .blue-dot {
+    background-color: #3498db;
+    margin-left: 5px;
+  }
+  
+  .green-dot {
+    background-color: #2ecc71;
+    margin-left: 5px;
+  }
+  
+  .highlight {
+    font-weight: bold;
+    color: #d35400;
+  }
+  
